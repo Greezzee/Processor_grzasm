@@ -1,0 +1,16 @@
+begin;
+    scan_num rax;
+    mov rbx 1;
+    mov rcx 0;
+    mov rdx 0;
+    set_mark :FIB;
+    jump_0 rax :E;
+        print_num rbx;
+        print '\n';
+        mov rdx rbx;
+        add rbx rcx;
+        mov rcx rdx;
+        sub rax 1;
+        jump :FIB;
+    set_mark :E;
+end;

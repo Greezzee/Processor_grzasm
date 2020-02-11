@@ -1,0 +1,115 @@
+begin;
+
+    scan_num rax;
+    set *0 rax;
+    scan_num rbx;
+    set *4 rbx;
+    scan_num rcx;
+    set *8 rcx;
+#LOL
+
+    push rbx;
+    mul rbx;
+    push 4;
+    mul rax;
+    mul rcx;
+    sub;
+    top rdx;
+    jump_neg :NO_ROOTS;
+    mul rdx 1000000;
+    sqrt rdx;
+
+jump_0 rax :LIN;
+
+mul rbx -1000;
+push rbx;
+push rdx;
+add;
+div 2;
+div rax;
+mul -1;
+top rcx;
+push rcx;
+jump_neg :minus;
+print '-';
+set_mark :minus;
+mul -1;
+abs;
+top rcx;
+div 1000;
+print_num;
+print ',';
+push rcx;
+mod 1000;
+print_num;
+
+jump_0 rdx :E;
+print '\n';
+
+push rbx;
+push rdx;
+sub;
+div 2;
+div rax;
+top rcx;
+push rcx;
+mul -1;
+jump_neg :minus2;
+print '-';
+set_mark :minus2;
+mul -1;
+abs;
+top rcx;
+div 1000;
+print_num;
+print ',';
+push rcx;
+mod 1000;
+print_num;
+jump :E;
+
+
+set_mark :NO_ROOTS;
+    print 'N';
+    print 'o';
+    print '\_';
+    print 'r';
+    print 'o';
+    print 'o';
+    print 't';
+    jump :E;
+
+
+set_mark :LIN;
+    jump_0 rbx :EMPTY;
+    mul rcx -1000;
+    push rcx;
+    div rbx;
+    top rdx;
+    div 1000;
+    print_num;
+    print ',';
+    push rdx;
+    mod 1000;
+    print_num;
+    jump :E;
+
+set_mark :EMPTY;
+    jump_0 rcx :INF;
+    jump :NO_ROOTS;
+
+set_mark :INF;
+    print 'I';
+    print 'n';
+    print 'f';
+    print '\_';
+    print 'r';
+    print 'o';
+    print 'o';
+    print 't';
+    jump :E;
+
+
+set_mark :E;
+print '\n';
+end;

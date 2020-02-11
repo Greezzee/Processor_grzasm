@@ -1,0 +1,23 @@
+set_func :F;
+    print_s;
+    print '\n';
+    jump_0 rax :RET;
+        push ax;
+        sub ax 1;
+        func :F;
+        mul;
+        jump :R2;
+    set_mark :RET;
+        push 1;
+    set_mark :R2;
+    print_s;
+    print '\n';
+return;
+
+#test comment
+begin;
+    scan_num ax; #test comment
+    func :F;
+    print_num;
+    print '\n';
+end;

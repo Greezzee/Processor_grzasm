@@ -1,0 +1,21 @@
+begin;
+
+set_mark :S;
+scan al;
+push al;
+sub '\n';
+jump_0 :S_END;
+set_byte *ebx al;
+add ebx 1;
+jump :S;
+set_mark :S_END;
+
+set_mark :p;
+sub ebx 1;
+get_byte *ebx cl;
+print cl;
+jump_0 ebx :e;
+jump :p;
+
+set_mark :e;
+end;
