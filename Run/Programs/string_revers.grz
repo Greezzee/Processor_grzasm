@@ -16,6 +16,6 @@ get_byte *ebx cl;
 print cl;
 jump_0 ebx :e;
 jump :p;
-
 set_mark :e;
+print '\n';
 end;
