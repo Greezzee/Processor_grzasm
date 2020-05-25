@@ -34,7 +34,6 @@ void Compiler::Compile(const char* in_file_name, const char* out_file_name)
         FileManager::WriteBinary("out.grun", _instructs, sizeof(Instruction), _instr_count);
     else
         FileManager::WriteBinary(out_file_name, _instructs, sizeof(Instruction), _instr_count);
-    
     free(_readed_text);
     free(_instructs);
 

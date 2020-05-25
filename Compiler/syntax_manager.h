@@ -40,8 +40,6 @@ Flag SyntaxManager::GetFlag(const char* str)
     if (strcmp("print_num", str) == 0) return CMD;
     if (strcmp("set_mark", str) == 0)  return CMD;
     if (strcmp("jump", str) == 0)      return CMD;
-    if (strcmp("jump_0", str) == 0)    return CMD;
-    if (strcmp("jump_neg", str) == 0)  return CMD;
     if (strcmp("set_func", str) == 0)  return CMD;
     if (strcmp("func", str) == 0)      return CMD;
     if (strcmp("return", str) == 0)    return CMD;
@@ -54,7 +52,13 @@ Flag SyntaxManager::GetFlag(const char* str)
     if (strcmp("abs", str) == 0)       return CMD;
     if (strcmp("print_r", str) == 0)   return CMD;
     if (strcmp("print_s", str) == 0)   return CMD;
-
+    if (strcmp("cmp", str) == 0)       return CMD;
+    if (strcmp("jb", str) == 0)        return CMD;
+    if (strcmp("jl", str) == 0)        return CMD;
+    if (strcmp("je", str) == 0)        return CMD;
+    if (strcmp("jbe", str) == 0)       return CMD;
+    if (strcmp("jle", str) == 0)       return CMD;
+    if (strcmp("jne", str) == 0)       return CMD;
 
     if (strcmp("rax", str) == 0)        return REG;
     if (strcmp("rbx", str) == 0)        return REG;
@@ -138,8 +142,6 @@ int64_t SyntaxManager::GetCMD(const char* str)
     if (strcmp("print_num", str) == 0) return PRINT_NUM;
     if (strcmp("set_mark", str) == 0)  return SET_MARK;
     if (strcmp("jump", str) == 0)      return JUMP;
-    if (strcmp("jump_0", str) == 0)    return JUMP_0;
-    if (strcmp("jump_neg", str) == 0)  return JUMP_NEG;
     if (strcmp("set_func", str) == 0)  return SET_FUNC;
     if (strcmp("func", str) == 0)      return FUNC;
     if (strcmp("return", str) == 0)    return RETURN;
@@ -152,6 +154,13 @@ int64_t SyntaxManager::GetCMD(const char* str)
     if (strcmp("set_byte", str) == 0)  return SET_BYTE;
     if (strcmp("print_r", str) == 0)   return PRINT_RAM;
     if (strcmp("print_s", str) == 0)   return PRINT_STACK;
+    if (strcmp("cmp", str) == 0)       return CMP;
+    if (strcmp("jb", str) == 0)        return JB;
+    if (strcmp("jl", str) == 0)        return JL;
+    if (strcmp("je", str) == 0)        return JE;
+    if (strcmp("jbe", str) == 0)       return JBE;
+    if (strcmp("jle", str) == 0)       return JLE;
+    if (strcmp("jne", str) == 0)       return JNE;
 
     return C_ERR;
 }

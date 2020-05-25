@@ -27,6 +27,8 @@ private:
     char* _memory;
     int64_t _reg[5];
 
+    bool _flag_bigger, _flag_less, _flag_equal;
+
     void Execute();
 
     void SetReg(Register r, int64_t val);
@@ -58,6 +60,7 @@ private:
     void AbsCMD(Instruction* instr);
     void PrintRamCMD(Instruction* instr);
     void PrintStackCMD(Instruction* instr);
+    void CMP_CMD(Instruction* instr);
 };
 
 void Processor::Run(const char* filename)
@@ -78,12 +81,40 @@ void Processor::Execute()
     for (int i = 0; i < 5; i++)
         _reg[i] = 0;
     cur_instr = 0;
+    _flag_equal = false;
+    _flag_less = false;
+    _flag_bigger = false;
     while(_instr[cur_instr].cmd != BEGIN) cur_instr++;
     while(_instr[cur_instr].cmd != END) {
         if (cur_instr >= _instr_count)
             Error::RuntimeErr("END not reachable");
         Instruction* instr = &_instr[cur_instr];
-        switch (_instr[cur_instr].cmd)
+
+        unsigned char cmd = (unsigned char)_instr[cur_instr].cmd;
+        bool exec = false;
+
+        if ((cmd & 128) == 0 && (cmd & 64) == 0 && (cmd & 32) == 0)
+            exec = true;
+
+        if ((cmd & 128) != 0) {
+            cmd -= 128;
+            if (_flag_bigger)
+                exec = true;
+        }
+
+        if ((cmd & 64) != 0) {
+            cmd -= 64;
+            if (_flag_less)
+                exec = true;
+        }
+
+        if ((cmd & 32) != 0) {
+            cmd -= 32;
+            if (_flag_equal)
+                exec = true;
+        }
+        if (exec)
+        switch ((Command)cmd)
         {
         case STAY:
             break;
@@ -134,12 +165,6 @@ void Processor::Execute()
         case JUMP:
             JumpCMD(instr);
             break;
-        case JUMP_0:
-            Jump0CMD(instr);
-            break;
-        case JUMP_NEG:
-            JumpNegCMD(instr);
-            break;
         case SET_FUNC:
             break;
         case FUNC:
@@ -174,6 +199,9 @@ void Processor::Execute()
         case PRINT_STACK:
             PrintStackCMD(instr);
             break;
+        case CMP:
+            CMP_CMD(instr);
+            break;
         default:
             Error::RuntimeErr("Unknown command");
             break;
@@ -181,6 +209,32 @@ void Processor::Execute()
         cur_instr++;
     }
 
+}
+
+void Processor::CMP_CMD(Instruction* instr)
+{
+    int64_t num1 = GetReg((Register)instr->arg1);
+    int64_t num2 = 0;
+    if (instr->arg2_flag == REG)
+        num2 = GetReg((Register)instr->arg2);
+    if (instr->arg2_flag == NUM)
+        num2 = instr->arg2;
+
+    if (num1 == num2) {
+        _flag_equal = true;
+        _flag_bigger = false;
+        _flag_less = false;
+    }
+    if (num1 > num2) {
+        _flag_equal = false;
+        _flag_bigger = true;
+        _flag_less = false;
+    }
+    if (num1 < num2) {
+        _flag_equal = false;
+        _flag_bigger = false;
+        _flag_less = true;
+    }
 }
 
 void Processor::SetReg(Register r, int64_t val)
@@ -565,36 +619,6 @@ void Processor::PrintNumCMD(Instruction* instr)
 void Processor::JumpCMD(Instruction* instr)
 {
     cur_instr = instr->arg1;
-}
-void Processor::Jump0CMD(Instruction* instr)
-{
-    if (instr->arg1_flag == MARK) {
-        if (_program_stack.Pop() == 0)
-            cur_instr = instr->arg1;
-    }
-    else if (instr->arg1_flag == NUM) {
-        if (instr->arg1 == 0)
-            cur_instr = instr->arg2;
-    }
-    else if (instr->arg1_flag == REG) {
-        if (GetReg((Register)instr->arg1) == 0)
-            cur_instr = instr->arg2;
-    }
-}
-void Processor::JumpNegCMD(Instruction* instr)
-{
-    if (instr->arg1_flag == MARK) {
-        if (_program_stack.Pop() < 0)
-            cur_instr = instr->arg1;
-    }
-    else if (instr->arg1_flag == NUM) {
-        if (instr->arg1 < 0)
-            cur_instr = instr->arg2;
-    }
-    else if (instr->arg1_flag == REG) {
-        if (GetReg((Register)instr->arg1) < 0)
-            cur_instr = instr->arg2;
-    }
 }
 void Processor::FuncCMD(Instruction* instr)
 {

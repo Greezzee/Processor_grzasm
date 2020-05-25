@@ -21,9 +21,7 @@ private:
 size_t LexemConverter::MakeInstructs(Lexem* lexems, size_t lexems_count,  Instruction** output_instructs)
 {
     size_t instr_count = GetInstrCount(lexems, lexems_count);
-
     *output_instructs = (Instruction*)calloc(instr_count, sizeof(Instruction));
-
     size_t cur_instr_lex = 0;
     size_t cur_instr = 0;
     Lexem instr_lexems[3];

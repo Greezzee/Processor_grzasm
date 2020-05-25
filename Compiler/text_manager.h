@@ -40,7 +40,6 @@ size_t TextManager::ConvertToLexems(char* text, Lexem** readed_text)
 {
     DeleteComments(text);
     _str_count = SplitToStrings(text, &_strings);
-    
     size_t lexems_count = 0;
     _names_count = 0;
     _name_table = nullptr;
@@ -50,9 +49,7 @@ size_t TextManager::ConvertToLexems(char* text, Lexem** readed_text)
         lexems_in_str_count[i] = ReadLexemsInString(_strings[i], _lexems_in_string + i);
         lexems_count += lexems_in_str_count[i];
     }
-    
     *readed_text = (Lexem*)calloc(lexems_count, sizeof(Lexem));
-    
     int cur_str = 0, cur_lex = 0;
     for (int i = 0; i < lexems_count; i++)
     {
@@ -114,7 +111,6 @@ size_t TextManager::ReadLexemsInString(char* str, Lexem** out)
             (*out)[i].val = (int64_t)GetMarkID(buf);
         else
             (*out)[i].val  = SyntaxManager::GetVal(buf);
-
         if ((*out)[i].flag == F_ERR)
             Error::SyntaxErr(buf);
         i++;

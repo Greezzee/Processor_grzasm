@@ -1,10 +1,14 @@
 begin;
-push 1;
-push 2;
-push 3;
-print_s;
-print '\n';
-pop;
-pop;
-print_s;
+mov eax -1;
+cmp eax -1;
+jne :TRUE;
+jump :FALSE;
+
+set_mark :TRUE;
+print 't';
+jump :END;
+
+set_mark :FALSE;
+print 'f';
+set_mark :END;
 end;

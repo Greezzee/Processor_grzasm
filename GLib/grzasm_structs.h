@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-enum Flag: char
+enum Flag: unsigned char
 {
     F_ERR,
     NONE,
@@ -18,7 +18,7 @@ enum Flag: char
     RADR
 };
 
-enum Command: char
+enum Command: unsigned char
 {
     C_ERR,
 
@@ -43,8 +43,6 @@ enum Command: char
 
     SET_MARK,
     JUMP,
-    JUMP_0,
-    JUMP_NEG,
 
     SET_FUNC,
     FUNC,
@@ -61,9 +59,21 @@ enum Command: char
 
     PRINT_RAM,
     PRINT_STACK,
+
+    CMP,
+
+    JB = (Command)((unsigned char)JUMP + 128),
+    JL = (Command)((unsigned char)JUMP + 64),
+    JE = (Command)((unsigned char)JUMP + 32),
+
+    JBE = (Command)((unsigned char)JUMP + 128 + 32),
+    JLE = (Command)((unsigned char)JUMP + 64 + 32),
+
+    JNE = (Command)((unsigned char)JUMP + 128 + 64),
+
 };
 
-enum Register: char
+enum Register: unsigned char
 {
     R_ERR, rax, rbx, rcx, rdx, eax, ebx, ecx, edx, ax, bx, cx, dx,
     ah, bh, ch, dh, al, bl, cl, dl, esp

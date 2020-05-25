@@ -3,8 +3,8 @@
 #include "../GLib/grzasm_structs.h"
 #include <stdlib.h>
 #include <stdio.h>
-const static size_t InstructionCount = 75;
-const static char _possible_command[InstructionCount][3] = {
+const static size_t InstructionCount = 77;
+const static unsigned char _possible_command[InstructionCount][3] = {
         {STAY, NONE, NONE}, //do nothing
 
         {PUSH, REG, NONE}, //push register's data to stack
@@ -72,14 +72,6 @@ const static char _possible_command[InstructionCount][3] = {
 
         {JUMP, MARK, NONE}, //Jump to mark
 
-        {JUMP_0, MARK, NONE}, //Pop element from stack. If it is 0, jump to mark
-        {JUMP_0, NUM, MARK}, //If number is 0, jump to mark
-        {JUMP_0, REG, MARK}, //If reg value is 0, jump to mark
-
-        {JUMP_NEG, MARK, NONE}, //Pop element from stack. If it is < 0, jump to mark
-        {JUMP_NEG, NUM, MARK}, //If number is < 0, jump to mark
-        {JUMP_NEG, REG, MARK}, //If reg value is < 0, jump to mark
-
         {SET_FUNC, MARK, NONE}, //Create function mark (synonym to SET_MARK)
 
         {FUNC, MARK, NONE}, //Jump to mark, but push to function-stack current position in code
@@ -109,6 +101,16 @@ const static char _possible_command[InstructionCount][3] = {
         {PRINT_RAM, ADR, ADR}, //Print number in RAM from adr1 to adr2 in line (for debug only)
 
         {PRINT_STACK, NONE, NONE}, //Print all numbers in stack in line (Debug only)
+
+        {CMP, REG, REG},
+        {CMP, REG, NUM},
+
+        {JB, MARK, NONE},
+        {JL, MARK, NONE},
+        {JE, MARK, NONE},
+        {JLE, MARK, NONE},
+        {JBE, MARK, NONE},
+        {JNE, MARK, NONE},
     };
 
 class InstructionManager
